@@ -208,6 +208,8 @@ Trader.prototype.processAdvice = function(advice) {
         date: advice.date
       });
 
+      this.activeStopTrigger.instance.cancel();
+
       delete this.activeStopTrigger;
     }
 
@@ -336,10 +338,10 @@ Trader.prototype.createOrder = function(side, amount, advice, id) {
           this.deferredEmit('triggerCreated', {
             id: triggerId,
             at: advice.date,
-            initialPrice: this.price,
             type: 'trialingStop',
             properties: {
-              trail: trigger.trailValue
+              trail: trigger.trailValue,
+              initialPrice: summary.price,
             }
           });
 
@@ -351,6 +353,7 @@ Trader.prototype.createOrder = function(side, amount, advice, id) {
               onTrigger: this.onStopTrigger,
               props: {
                 trail: trigger.trailValue,
+                initialPrice: summary.price,
               }
             })
           }

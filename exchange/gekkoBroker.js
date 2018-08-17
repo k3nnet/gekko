@@ -162,8 +162,8 @@ class Broker {
     return new Trigger({
       api: this.api,
       type,
-      props,
-      onTrigger
+      onTrigger,
+      props
     });
   }
 }
