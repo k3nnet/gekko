@@ -345,6 +345,10 @@ Trader.prototype.createOrder = function(side, amount, advice, id) {
             }
           });
 
+          log.info(`Creating trailingStop trigger "${triggerId}"! Properties:`);
+          log.info(`\tInitial price: ${summary.price}`);
+          log.inof(`\tTrail of: ${trigger.trailValue}`);
+
           this.activeStopTrigger = {
             id: triggerId,
             adviceId: advice.id,
@@ -363,7 +367,9 @@ Trader.prototype.createOrder = function(side, amount, advice, id) {
   });
 }
 
-Trader.prototype.onStopTrigger = function() {
+Trader.prototype.onStopTrigger = function(price) {
+  log.info(`TrailingStop trigger "${triggerId}" fired! Observed price was ${price}`);
+
   this.deferredEmit('triggerFired', {
     id: this.activeStopTrigger.id,
     date: moment()
